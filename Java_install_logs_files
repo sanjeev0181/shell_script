@@ -1,0 +1,45 @@
+. Create a bash script (.sh file) to 
+
+   a) download open JDK 1.8; 
+
+   b) install java;  
+
+   c) add the path of the java executable to the “PATH” environment variable and .bashrc of the user; 
+
+   d) ensure the terminal can echo each step with date & time stamp and redirect the sh file output to "/opt/logs/script_logs.log"
+
+
+#!/bin/bash
+
+# Log file path
+LOG_FILE="/opt/logs/script_logs.log"
+
+# Function to log messages with timestamp
+log() {
+    echo "$(date +"%Y-%m-%d %H:%M:%S"): $1" >> "$LOG_FILE"
+}
+
+# a) Download OpenJDK 1.8
+log "Downloading OpenJDK 1.8..."
+sudo apt-get update
+sudo apt-get install openjdk-8-jdk -y
+
+# b) Install Java
+log "Installing Java..."
+sudo apt-get install default-jdk -y
+
+# c) Add Java executable path to PATH and .bashrc
+JAVA_PATH=$(which java)
+echo "export PATH=\$PATH:$JAVA_PATH" >> ~/.bashrc
+export PATH=$PATH:$JAVA_PATH
+
+# d) Log completion message
+log "Java installation completed successfully."
+
+# To check the Java version
+java -version
+
+
+chmod +x install_java.sh
+./install_java.sh
+
